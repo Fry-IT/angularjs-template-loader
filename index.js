@@ -8,13 +8,13 @@ const stringRegex = /(['`"])((?:[^\\]\\\1|.)*?)\1/g;
 
 function replaceStringsWithRequires(string, relativeTo) {
   return string.replace(stringRegex, (match, quote, url) => {
-    if (relativeTo) {
+    if (relativeTo && url.charAt(0) !== ".") {
       url = path.join(relativeTo, url);
     }
-    else if (url.charAt(0) !== ".") {
-      url = "./" + url;
-    }
-    if (os.platform() === "win32") url = url.replace(/\\/g, '\\\\');
+    // if (url.charAt(0) !== ".") {
+    //   url = "./" + url;
+    // }
+    // if (os.platform() === "win32") url = url.replace(/\\/g, '\\\\');
     return "require('" + url + "')";
   });
 }
