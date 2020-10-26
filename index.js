@@ -8,14 +8,19 @@ const stringRegex = /(['`"])((?:[^\\]\\\1|.)*?)\1/g;
 
 function replaceStringsWithRequires(string, relativeTo) {
   return string.replace(stringRegex, (match, quote, url) => {
+    if (url === '@') {
+      return '\'' + url + '\'';
+    }
+
     if (relativeTo && url.charAt(0) !== ".") {
       url = path.join(relativeTo, url);
     }
+
     // if (url.charAt(0) !== ".") {
     //   url = "./" + url;
     // }
     // if (os.platform() === "win32") url = url.replace(/\\/g, '\\\\');
-    return "require('" + url + "')";
+    return "require('" + url + "').default";
   });
 }
 
